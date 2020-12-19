@@ -1,0 +1,52 @@
+﻿<Project Sdk="Microsoft.NET.Sdk.WindowsDesktop">
+
+  <PropertyGroup>
+    <TargetFramework>net5.0-windows</TargetFramework>
+    <UseWPF>true</UseWPF>
+    <OutputType>WinExe</OutputType>
+    <StartupObject>Libx.Blender.Forms.Wpf.Wpf_BlendForm</StartupObject>
+    <Configurations>WindowsDebug;WindowsRelease</Configurations>
+    <LangVersion>9</LangVersion>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='WindowsDebug|AnyCPU'">
+    <DefineConstants>DEBUG;TRACE;WINDOWS</DefineConstants>
+    <Optimize>false</Optimize>
+    <OutputPath>..\Out\Debug\</OutputPath>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='WindowsRelease|AnyCPU'">
+    <DefineConstants>TRACE;WINDOWS</DefineConstants>
+    <Optimize>true</Optimize>
+    <OutputPath>..\Out\Release\</OutputPath>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Compile Remove="Source\Controls\BlockOutliner.cs" />
+    <Compile Remove="Source\Controls\ConnectionControl.cs" />
+    <Compile Remove="Source\Controls\PreviewControl.cs" />
+    <Compile Remove="Source\Forms\ConnectionForm.cs" />
+    <Compile Remove="Source\Forms\NamesPage.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Remove=".gitignore" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="Source\Controls\BlockOutliner.cs" />
+    <None Include="Source\Controls\ConnectionControl.cs" />
+    <None Include="Source\Controls\PreviewControl.cs" />
+    <None Include="Source\Forms\ConnectionForm.cs" />
+    <None Include="Source\Forms\NamesPage.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Eto.Platform.Wpf" Version="2.5.7" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Libx.Blender\Libx.Blender.csproj" />
+  </ItemGroup>
+
+</Project>
