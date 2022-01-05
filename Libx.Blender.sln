@@ -1,22 +1,37 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio Version 16
-VisualStudioVersion = 16.0.30717.126
+# Visual Studio Version 17
+VisualStudioVersion = 17.0.32014.148
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Libx.Blender", "Libx.Blender\Libx.Blender.csproj", "{7EE9A373-8FBD-44E8-A2C2-0F8A91EEDDB4}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Libx.Blender.Viewer", "Libx.Blender.Viewer\Libx.Blender.Viewer.csproj", "{DB220CB5-AEFD-47F4-9BBB-BB92CEE50D29}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{89F6A0CC-09E8-4B4A-A7F0-51E9D337D3C3}"
+	ProjectSection(SolutionItems) = preProject
+		.editorconfig = .editorconfig
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
 		WindowsDebug|Any CPU = WindowsDebug|Any CPU
 		WindowsRelease|Any CPU = WindowsRelease|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{7EE9A373-8FBD-44E8-A2C2-0F8A91EEDDB4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7EE9A373-8FBD-44E8-A2C2-0F8A91EEDDB4}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7EE9A373-8FBD-44E8-A2C2-0F8A91EEDDB4}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7EE9A373-8FBD-44E8-A2C2-0F8A91EEDDB4}.Release|Any CPU.Build.0 = Release|Any CPU
 		{7EE9A373-8FBD-44E8-A2C2-0F8A91EEDDB4}.WindowsDebug|Any CPU.ActiveCfg = Debug|Any CPU
 		{7EE9A373-8FBD-44E8-A2C2-0F8A91EEDDB4}.WindowsDebug|Any CPU.Build.0 = Debug|Any CPU
 		{7EE9A373-8FBD-44E8-A2C2-0F8A91EEDDB4}.WindowsRelease|Any CPU.ActiveCfg = Release|Any CPU
 		{7EE9A373-8FBD-44E8-A2C2-0F8A91EEDDB4}.WindowsRelease|Any CPU.Build.0 = Release|Any CPU
+		{DB220CB5-AEFD-47F4-9BBB-BB92CEE50D29}.Debug|Any CPU.ActiveCfg = WindowsDebug|Any CPU
+		{DB220CB5-AEFD-47F4-9BBB-BB92CEE50D29}.Debug|Any CPU.Build.0 = WindowsDebug|Any CPU
+		{DB220CB5-AEFD-47F4-9BBB-BB92CEE50D29}.Release|Any CPU.ActiveCfg = WindowsRelease|Any CPU
+		{DB220CB5-AEFD-47F4-9BBB-BB92CEE50D29}.Release|Any CPU.Build.0 = WindowsRelease|Any CPU
 		{DB220CB5-AEFD-47F4-9BBB-BB92CEE50D29}.WindowsDebug|Any CPU.ActiveCfg = WindowsDebug|Any CPU
 		{DB220CB5-AEFD-47F4-9BBB-BB92CEE50D29}.WindowsDebug|Any CPU.Build.0 = WindowsDebug|Any CPU
 		{DB220CB5-AEFD-47F4-9BBB-BB92CEE50D29}.WindowsRelease|Any CPU.ActiveCfg = WindowsRelease|Any CPU

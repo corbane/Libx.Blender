@@ -1,39 +1,37 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
-  <PropertyGroup>
-    <TargetFramework>net5.0</TargetFramework>
-    <Configurations>Release;Debug</Configurations>
-    <OutputType>Library</OutputType>
-    <StartupObject></StartupObject>
-    <LangVersion>9</LangVersion>
-  </PropertyGroup>
+    <PropertyGroup>
+        <TargetFramework>net6.0-windows</TargetFramework>
+        <LangVersion>10</LangVersion>
+        <Configurations>Release;Debug</Configurations>
+        <OutputType>Library</OutputType>
+        <StartupObject></StartupObject>
+    </PropertyGroup>
    
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
-    <DefineConstants>TRACE;DEBUG</DefineConstants>
-    <OutputPath>..\Out\Debug</OutputPath>
-    <AllowUnsafeBlocks>false</AllowUnsafeBlocks>
-  </PropertyGroup>
+    <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+        <DefineConstants>TRACE;DEBUG</DefineConstants>
+        <OutputPath>..\Out\Debug</OutputPath>
+        <AllowUnsafeBlocks>false</AllowUnsafeBlocks>
+    </PropertyGroup>
 
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
-    <DefineConstants>TRACE</DefineConstants>
-    <OutputPath>..\Out\Release</OutputPath>
-  </PropertyGroup>
+    <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
+        <DefineConstants>TRACE</DefineConstants>
+        <OutputPath>..\Out\Release</OutputPath>
+    </PropertyGroup>
 
-  <ItemGroup>
-    <Compile Remove="Demo\**" />
-    <EmbeddedResource Remove="Demo\**" />
-    <None Remove="Demo\**" />
-  </ItemGroup>
+    <ItemGroup>
+        <Compile Remove="Source\IO\BlendData.cs" />
+        <Compile Remove="Source\IO\ErrorsLib.cs" />
+        <Compile Remove="Source\Utilities\IconLib.cs" />
+    </ItemGroup>
 
-  <ItemGroup>
-    <Compile Remove="Source\IO\BlendData.cs" />
-  </ItemGroup>
+	<ItemGroup>
+		<None Remove="Source\Scripts\**" />
+		<None Remove="Icons\_blender_icons.*" />
+		<None Remove="Icons\*.svg" />
+	</ItemGroup>
 
-  <ItemGroup>
-    <None Remove="Icons\_blender_icons.afdesign" />
-  </ItemGroup>
-
-  <ItemGroup>
+	<ItemGroup>
     <EmbeddedResource Include="Icons\Armature.png" />
     <EmbeddedResource Include="Icons\Blender.png" />
     <EmbeddedResource Include="Icons\Brush.png" />
@@ -68,6 +66,15 @@
     <EmbeddedResource Include="Icons\Blank.png" />
     <EmbeddedResource Include="Icons\ViewLayer.png" />
     <EmbeddedResource Include="Icons\World.png" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="..\.editorconfig" Link=".editorconfig" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Eto.Platform.Wpf" Version="2.6.0" />
+    <PackageReference Include="ZstdNet" Version="1.4.5" />
   </ItemGroup>
 
   <ItemGroup>

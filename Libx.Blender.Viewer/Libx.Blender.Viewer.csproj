@@ -1,12 +1,12 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk.WindowsDesktop">
 
   <PropertyGroup>
-    <TargetFramework>net5.0-windows</TargetFramework>
+    <TargetFramework>net6.0-windows</TargetFramework>
+    <LangVersion>10</LangVersion>
     <UseWPF>true</UseWPF>
     <OutputType>WinExe</OutputType>
-    <StartupObject>Libx.Blender.Forms.Wpf.Wpf_BlendForm</StartupObject>
+    <StartupObject>Libx.Blender.Forms.BlendForm</StartupObject>
     <Configurations>WindowsDebug;WindowsRelease</Configurations>
-    <LangVersion>9</LangVersion>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='WindowsDebug|AnyCPU'">
@@ -23,7 +23,6 @@
 
   <ItemGroup>
     <Compile Remove="Source\Controls\BlockOutliner.cs" />
-    <Compile Remove="Source\Controls\ConnectionControl.cs" />
     <Compile Remove="Source\Controls\PreviewControl.cs" />
     <Compile Remove="Source\Forms\ConnectionForm.cs" />
     <Compile Remove="Source\Forms\NamesPage.cs" />
@@ -34,15 +33,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <None Include="Source\Controls\BlockOutliner.cs" />
-    <None Include="Source\Controls\ConnectionControl.cs" />
-    <None Include="Source\Controls\PreviewControl.cs" />
-    <None Include="Source\Forms\ConnectionForm.cs" />
-    <None Include="Source\Forms\NamesPage.cs" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <PackageReference Include="Eto.Platform.Wpf" Version="2.5.7" />
+    <PackageReference Include="Eto.Platform.Wpf" Version="2.6.0" />
   </ItemGroup>
 
   <ItemGroup>
