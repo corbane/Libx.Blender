@@ -77,6 +77,7 @@ public class BlockStore : TreeStore
 
     #region Rows
 
+    /// Create an array of "BlockItem" rows representing the blocks inside the Blend file.
     protected override TreeItem[] CreateItems ()
     {
         if (Blend == null)
@@ -142,6 +143,7 @@ public class BlockStore : TreeStore
     #endregion
 }
 
+/// A row that displays a block from the Blend file.
 public class BlockItem : TreeItem
 {
     public BlockItem (IO.Block block) : base (block)
@@ -185,6 +187,7 @@ public class BlockItem : TreeItem
     }
 }
 
+/// A row that displays a block field from the Blend file.
 public class ValueItem : TreeItem
 {
     static ValueItem[] _empty = new ValueItem[0];

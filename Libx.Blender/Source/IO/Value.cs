@@ -1,17 +1,13 @@
-﻿
+﻿namespace Libx.Blender.IO;
+
 using System;
-using System.Linq;
-using System.Collections;
-using System.Collections.Generic;
-using System.Diagnostics;
 using System.Text;
-
-#nullable enable
-
-namespace Libx.Blender.IO;
 
 using len_t = System.Int32;
 using adr_t = System.UInt64;
+
+#nullable enable
+
 
 public class Value
 {
@@ -27,25 +23,6 @@ public class Value
     }
 
     public bool IsValid { get; }
-
-    // public object? Data ()
-    // {
-    //      var name = Field.Name;
-    //      var type = Field.Type;
-    //      var offset = Field.Offset;
-    // 
-    //      return Field.GetOverType () switch
-    //      {
-    //           IField.OverType.Pointer      => Block.OwnerFile.GetBlock (Block.OwnerFile.Buffer.adr (Block.BodyPosition + offset)),
-    //           IField.OverType.Structure    => Block.sub (Field),
-    //           IField.OverType.ArrayOfTable => Block.box_array (type.SystemType, offset, name.Size1, name.Size2, name.Size3),
-    //           IField.OverType.Table        => Block.box_array (type.SystemType, offset, name.Size1, name.Size2),
-    //           IField.OverType.String       => Block.strZ (Encoding.UTF8, offset, name.Size1),
-    //           IField.OverType.Array        => Block.box_array (type.SystemType, offset, name.Size1),
-    //           IField.OverType.Scalar       => Block.box (type.SystemType, offset),
-    //           _ => throw new Exception ("")
-    //      };
-    // }
 
     public object? Data ()
     {

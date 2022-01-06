@@ -7,6 +7,7 @@
     <OutputType>WinExe</OutputType>
     <StartupObject>Libx.Blender.Forms.BlendForm</StartupObject>
     <Configurations>WindowsDebug;WindowsRelease</Configurations>
+    <Nullable>enable</Nullable>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='WindowsDebug|AnyCPU'">

@@ -1,9 +1,15 @@
 
+Displays the contents of a Blender file.
+
+Work with Blender file from version 1.0 to 3.0
+
 ![](./Capture.png)
 
-- this project displays the contents of ".blend" files.
-  This is provided only to understand and "see" the internal structure of a blend file.
-- This is a draft, I will not continue to develop it.
-  It is better to use Blender in the background or to compile it as a module to read and manipulate Blend files.
-- This is a snippet from my library and there is probably some unnecessary code.
-  Besides the user interface, the [IO/File.cs](./Libx.Blender/Source/IO/File.cs) file is probably what might interest you.
+## Warning
+
+This is a experimental project.
+Provided only to understand and "see" the internal structure of a blend file.
+
+if you want to extract or manipulate  data from a Blend file, it is better to use Blender in the background or compile it as a module.
+
+Originally written for batch processing and obtain basic information and statistics on several files. 
