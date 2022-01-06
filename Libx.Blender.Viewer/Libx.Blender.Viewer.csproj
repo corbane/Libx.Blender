@@ -30,14 +30,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <None Remove=".gitignore" />
-  </ItemGroup>
-
-  <ItemGroup>
     <PackageReference Include="Eto.Platform.Wpf" Version="2.6.0" />
-  </ItemGroup>
-
-  <ItemGroup>
     <ProjectReference Include="..\Libx.Blender\Libx.Blender.csproj" />
   </ItemGroup>
 
