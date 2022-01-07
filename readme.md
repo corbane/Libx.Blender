@@ -15,7 +15,14 @@ if you want to extract or manipulate  data from a Blend file, it is better to us
 Originally written for batch processing and obtain basic information and statistics on several files. 
 
 ## References
+
+Official:
+
 - [blender_file_format](https://developer.blender.org/diffusion/B/browse/master/doc/blender_file_format/)
+- [blendfile.py](https://developer.blender.org/diffusion/BDT/browse/master/modules/blendfile.py)
+
+Others:
+
 - [Java .Blend File Viewer](https://github.com/homacs/org.cakelab.blender.fileviewer)
 - [kaitai.io](https://formats.kaitai.io/blender_blend/index.html)
 - [assimp importer](https://github.com/assimp/assimp/blob/master/code/AssetLib/Blender)
