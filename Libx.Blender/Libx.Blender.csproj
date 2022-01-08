@@ -22,6 +22,7 @@
 
     <ItemGroup>
         <Compile Remove="Source\IO\BlendData.cs" />
+        <Compile Remove="Source\IO\enums.cs" />
         <Compile Remove="Source\IO\ErrorsLib.cs" />
         <Compile Remove="Source\Utilities\IconLib.cs" />
     </ItemGroup>
@@ -33,45 +34,55 @@
 	</ItemGroup>
 
 	<ItemGroup>
-    <EmbeddedResource Include="Icons\Armature.png" />
-    <EmbeddedResource Include="Icons\Blender.png" />
-    <EmbeddedResource Include="Icons\Brush.png" />
-    <EmbeddedResource Include="Icons\Camera.png" />
-    <EmbeddedResource Include="Icons\Collection.png" />
-    <EmbeddedResource Include="Icons\Connection.png" />
-    <EmbeddedResource Include="Icons\Curve.png" />
-    <EmbeddedResource Include="Icons\Empty.png" />
-    <EmbeddedResource Include="Icons\Error.png" />
-    <EmbeddedResource Include="Icons\Image.png" />
-    <EmbeddedResource Include="Icons\Lattice.png" />
-    <EmbeddedResource Include="Icons\Library.png" />
-    <EmbeddedResource Include="Icons\Light.png" />
-    <EmbeddedResource Include="Icons\LightProbe.png" />
-    <EmbeddedResource Include="Icons\LinkMaterial.png" />
-    <EmbeddedResource Include="Icons\Material.png" />
-    <EmbeddedResource Include="Icons\MaterialList.png" />
-    <EmbeddedResource Include="Icons\Mesh.png" />
-    <EmbeddedResource Include="Icons\MetaBall.png" />
-    <EmbeddedResource Include="Icons\ModifierList.png" />
-    <EmbeddedResource Include="Icons\NodeMaterial.png" />
-    <EmbeddedResource Include="Icons\Palette.png" />
-    <EmbeddedResource Include="Icons\Property.png" />
-    <EmbeddedResource Include="Icons\Object.png" />
-    <EmbeddedResource Include="Icons\PropertyList.png" />
-    <EmbeddedResource Include="Icons\Scene.png" />
-    <EmbeddedResource Include="Icons\Speaker.png" />
-    <EmbeddedResource Include="Icons\Surface.png" />
-    <EmbeddedResource Include="Icons\Text.png" />
-    <EmbeddedResource Include="Icons\TextBlock.png" />
-    <EmbeddedResource Include="Icons\Texture.png" />
-    <EmbeddedResource Include="Icons\Blank.png" />
-    <EmbeddedResource Include="Icons\ViewLayer.png" />
-    <EmbeddedResource Include="Icons\World.png" />
-  </ItemGroup>
+		<EmbeddedResource Include="Icons/AC.png" />
+		<EmbeddedResource Include="Icons/AR.png" />
+		<EmbeddedResource Include="Icons/BR.png" />
+		<EmbeddedResource Include="Icons/CA.png" />
+		<EmbeddedResource Include="Icons/CF.png" />
+		<EmbeddedResource Include="Icons/CU.png" />
+		<EmbeddedResource Include="Icons/GD.png" />
+		<EmbeddedResource Include="Icons/GR.png" />
+		<EmbeddedResource Include="Icons/HA.png" />
+		<EmbeddedResource Include="Icons/IM.png" />
+		<EmbeddedResource Include="Icons/KE.png" />
+		<EmbeddedResource Include="Icons/LA.png" />
+		<EmbeddedResource Include="Icons/LI.png" />
+		<EmbeddedResource Include="Icons/LP.png" />
+		<EmbeddedResource Include="Icons/LS.png" />
+		<EmbeddedResource Include="Icons/LT.png" />
+		<EmbeddedResource Include="Icons/MA.png" />
+		<EmbeddedResource Include="Icons/MB.png" />
+		<EmbeddedResource Include="Icons/MC.png" />
+		<EmbeddedResource Include="Icons/ME.png" />
+		<EmbeddedResource Include="Icons/MS.png" />
+		<EmbeddedResource Include="Icons/NT.png" />
+		<EmbeddedResource Include="Icons/OB.png" />
+		<EmbeddedResource Include="Icons/PA.png" />
+		<EmbeddedResource Include="Icons/PL.png" />
+		<EmbeddedResource Include="Icons/PT.png" />
+		<EmbeddedResource Include="Icons/SC.png" />
+		<EmbeddedResource Include="Icons/SI.png" />
+		<EmbeddedResource Include="Icons/SK.png" />
+		<EmbeddedResource Include="Icons/SO.png" />
+		<EmbeddedResource Include="Icons/TE.png" />
+		<EmbeddedResource Include="Icons/TX.png" />
+		<EmbeddedResource Include="Icons/VF.png" />
+		<EmbeddedResource Include="Icons/VO.png" />
+		<EmbeddedResource Include="Icons/WO.png" />
+		<EmbeddedResource Include="Icons/WS.png" />
+	</ItemGroup>
 
-  <ItemGroup>
-    <PackageReference Include="Eto.Platform.Wpf" Version="2.6.0" />
-    <PackageReference Include="ZstdNet" Version="1.4.5" />
-  </ItemGroup>
+    <ItemGroup>
+        <PackageReference Include="Eto.Platform.Wpf" Version="2.6.0" />
+        <PackageReference Include="ZstdNet" Version="1.4.5" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <None Include=".scripts\icons.cs.csx" />
+      <None Include=".scripts\lib\CommandLineParser\CommandLine.dll" />
+      <None Include=".scripts\lib\CommandLineParser\CommandLine.xml" />
+      <None Include=".scripts\lib\CommandLineParser\License.md" />
+      <None Include=".scripts\lib\README.md" />
+    </ItemGroup>
 
 </Project>

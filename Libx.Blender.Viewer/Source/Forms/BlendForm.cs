@@ -92,6 +92,9 @@ public class BlendForm : Form
         // Top bar
         SelectBlend = new Button ();
         BlendInfos  = new Label ();
+        SelectBlend.AllowDrop = true;
+        SelectBlend.DragEnter += _OnDragEnter;
+        SelectBlend.DragDrop += _OnDragDrop;
 
         // Main panel
         BlockTable = new BlockTable ();
@@ -116,7 +119,6 @@ public class BlendForm : Form
         Title      = "Blend File Viewer";
         ClientSize = new Size (1400, 800);
         Padding    = new Padding (5);
-        AllowDrop  = true;
         Content    = new StackLayout
         { 
             Orientation = Orientation.Vertical,
@@ -128,6 +130,19 @@ public class BlendForm : Form
         };
     }
 
+    private void _OnDragEnter (object? sender, DragEventArgs e)
+    {
+        e.Effects = DragEffects.All;
+    }
+
+    private void _OnDragDrop (object? sender, DragEventArgs e)
+    {
+        if (e.Data.ContainsUris)
+        {
+            LoadPath (e.Data.Uris[0].LocalPath);
+        }
+    }
+
     [STAThread]
     public static void Main (string[] args)
     {
@@ -135,7 +150,26 @@ public class BlendForm : Form
         new Application ().Run (new BlendForm ());
     }
 
-    // Header bar
+    public void LoadPath (string path)
+    {
+        try
+        {
+            var blend = IO.File.From (path);
+
+            Title = path + " | Blender File Viewer";
+            BlendInfos.Text
+                = "Blender version : " + blend.Version
+                + " | Endian " + blend.Endian
+                + " | " + (blend.PointerSize == 4 ? "32" : "64") + " bits";
+            BlockTable.Store.Load (blend);
+            StructTable.Data.SetBlendFile (blend);
+        }
+        catch (Exception)
+        {
+
+            throw;
+        }
+    }
 
     Control _CreateHeaderBar ()
     {
@@ -163,18 +197,7 @@ public class BlendForm : Form
         dialog.Directory = new Uri (@"E:\Projet\Rhino\DevX\Libx.Blender\Demo");
 
         if (dialog.ShowDialog (this) == DialogResult.Ok)
-        {
-            var path = dialog.Filenames.First ();
-            var blend = IO.File.From (path);
-
-            Title = path + " | Blender File Viewer";
-            BlendInfos.Text
-                = "Blender version : " + blend.Version
-                + " | Endian " + blend.Endian
-                + " | " + (blend.PointerSize == 4 ? "32" : "64") + " bits";
-            BlockTable.Store.Load (blend);
-            StructTable.Data.SetBlendFile (blend);
-        }
+            LoadPath (dialog.Filenames.First ());
     }
 
     Control _CreateMainLayout ()
