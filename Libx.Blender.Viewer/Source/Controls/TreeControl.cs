@@ -478,8 +478,8 @@ public class TreeControl : TreeGridView
 
             foreach (TreeGridItem item in m_original_items)
             {
-                    if (((string)item.Values[cloumn_index]).Contains (pattern))
-                        Store.Add (item);
+                if (((string)item.Values[cloumn_index]).Contains (pattern))
+                    Store.Add (item);
             }
 
         }

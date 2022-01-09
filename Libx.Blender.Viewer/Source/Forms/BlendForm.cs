@@ -67,6 +67,14 @@ class BlendFormData : INotifyPropertyChanged
 
 public class BlendForm : Form
 {
+    [STAThread]
+    public static void Main (string[] args)
+    {
+        // new Application (Platforms.Wpf).Run (new BlendForm ());
+        new Application ().Run (new BlendForm ());
+    }
+
+
     readonly BlendFormData Data;
 
     // Left bar
@@ -82,7 +90,6 @@ public class BlendForm : Form
     // Status bar
     readonly CheckBox Flatten;
     readonly CheckBox Synchronize;
-    readonly CheckBox OnlyParent;
 
     public BlendForm ()
     {
@@ -92,9 +99,6 @@ public class BlendForm : Form
         // Top bar
         SelectBlend = new Button ();
         BlendInfos  = new Label ();
-        SelectBlend.AllowDrop = true;
-        SelectBlend.DragEnter += _OnDragEnter;
-        SelectBlend.DragDrop += _OnDragDrop;
 
         // Main panel
         BlockTable = new BlockTable ();
@@ -106,7 +110,6 @@ public class BlendForm : Form
         // Status bar
         Flatten     = new CheckBox ();
         Synchronize = new CheckBox ();
-        OnlyParent  = new CheckBox ();
 
         // Styles
         Eto.Style.Add <StackLayout> ("h-bar", h =>
@@ -130,26 +133,6 @@ public class BlendForm : Form
         };
     }
 
-    private void _OnDragEnter (object? sender, DragEventArgs e)
-    {
-        e.Effects = DragEffects.All;
-    }
-
-    private void _OnDragDrop (object? sender, DragEventArgs e)
-    {
-        if (e.Data.ContainsUris)
-        {
-            LoadPath (e.Data.Uris[0].LocalPath);
-        }
-    }
-
-    [STAThread]
-    public static void Main (string[] args)
-    {
-        // new Application (Platforms.Wpf).Run (new BlendForm ());
-        new Application ().Run (new BlendForm ());
-    }
-
     public void LoadPath (string path)
     {
         try
@@ -158,9 +141,11 @@ public class BlendForm : Form
 
             Title = path + " | Blender File Viewer";
             BlendInfos.Text
-                = "Blender version : " + blend.Version
-                + " | Endian " + blend.Endian
-                + " | " + (blend.PointerSize == 4 ? "32" : "64") + " bits";
+                = "blender: "        + blend.Version
+                + " | endian: "      + blend.Endian
+                + " | platform: "    + (blend.PointerSize == 4 ? "32" : "64") + " bits"
+                + " | compression: " + blend.Compression
+                + " | loading in "   + blend.LoadingTime + "s";
             BlockTable.Store.Load (blend);
             StructTable.Data.SetBlendFile (blend);
         }
@@ -171,10 +156,16 @@ public class BlendForm : Form
         }
     }
 
+
+    #region Header
+
     Control _CreateHeaderBar ()
     {
         SelectBlend.Text = "Open file";
         SelectBlend.Click += _OnOpen;
+        SelectBlend.AllowDrop = true;
+        SelectBlend.DragEnter += _OnDragEnter;
+        SelectBlend.DragDrop += _OnDragDrop;
 
         return new StackLayout
         {
@@ -189,7 +180,6 @@ public class BlendForm : Form
         };
     }
 
-
     void _OnOpen (object? sender, EventArgs e)
     {
         var dialog = new OpenFileDialog ();
@@ -200,20 +190,47 @@ public class BlendForm : Form
             LoadPath (dialog.Filenames.First ());
     }
 
+    void _OnDragEnter (object? sender, DragEventArgs e)
+    {
+        e.Effects = DragEffects.All;
+    }
+
+    void _OnDragDrop (object? sender, DragEventArgs e)
+    {
+        if (e.Data.ContainsUris)
+            LoadPath (e.Data.Uris[0].LocalPath);
+    }
+
+    #endregion
+
+
     Control _CreateMainLayout ()
     {
         Synchronize.Text = "Syncronize";
         Synchronize.Checked = Data.SynchronizeView;
         Synchronize.CheckedChanged += (sender, e) => Data.SetSynchronizeView (Synchronize.Checked ?? false);
 
-        OnlyParent.Text = "Only parent";
+        return new Splitter
+        {
+            Orientation = Orientation.Horizontal,
+            Panel1 = _CreateStructsPane (),
+            Panel2 = BlockTable
+        };
+                
+    }
 
+    #region Structs
+
+    Control _CreateStructsPane ()
+    {
         Flatten.Text = "flatten";
         Flatten.CheckedChanged += _OnFlattenChange;
 
-        NameSearchBox.TextChanged += (sender, e) => StructTable.ApplyFilter (1, NameSearchBox.Text);
+        NameSearchBox.TextChanged += _OnSearchTextChanged;
+        StructTable.Data.PropertyChanged += _OnStructTableState;
+        StructTable.CellClick += _OnCellClick;
 
-        var left = new StackLayout
+        return new StackLayout
         {
             Orientation = Orientation.Vertical,
             Width = 500,
@@ -224,20 +241,49 @@ public class BlendForm : Form
                     new StackLayoutItem (StructTable, HorizontalAlignment.Stretch, expand: true)
             }
         };
-
-        return new Splitter
-        {
-            Orientation = Orientation.Horizontal,
-            Panel1 = left,
-            Panel2 = BlockTable
-        };
-                
     }
 
+    void _OnStructTableState (object? sender, PropertyChangedEventArgs e)
+    {
+        switch (e.PropertyName)
+        {
+            case nameof (StructTableData.Filter):
+
+                if (StructTable.Data.Filter == NameSearchBox.Text ||
+                    StructTable.Data.FilterColumn != (int)StructTable.ColumnIndex.Name
+                ) break;
+
+                NameSearchBox.Text = StructTable.Data.Filter;
+                break;
+        }
+    }
+
+    private void _OnSearchTextChanged (object? sender, EventArgs e)
+    {
+        StructTable.Data.SetFilter ((int)StructTable.ColumnIndex.Name, NameSearchBox.Text);
+    }
 
     void _OnFlattenChange (object? sender, EventArgs e)
     {
         StructTable.Data.SetFlatten (Flatten.Checked ?? false);
     }
 
+    void _OnCellClick (object? sender, GridCellMouseEventArgs e)
+    {
+        if (e.Modifiers != Keys.Control)
+            return;
+
+        if (e.Column != (int)StructTable.ColumnIndex.Type)
+            return;
+
+        if (e.Item is not TreeGridItem item || item.Tag is not IO.Type type)
+            return;
+
+        if (String.IsNullOrWhiteSpace (type.Name))
+            return;
+
+        StructTable.Data.SetFilter ((int)StructTable.ColumnIndex.Name, type.Name);
+    }
+
+    #endregion
 }

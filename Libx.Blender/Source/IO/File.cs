@@ -1,8 +1,8 @@
 ﻿namespace Libx.Blender.IO;
 
 using System;
-using System.Collections;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Text;
 
 using Libx.Blender.Utilities;
@@ -36,11 +36,52 @@ public enum Endian
 
 public partial class File
 {
+    // PROCESS INFOS
+
+    // Issues:
+    //  LoadingTime reflects the execution time to load a file.
+    //  But it may not match the overall wait time.
+    //  For example, with a certain hard drive the system is blocked, this access time is not always included.
+
+    public string? Filepath { get; private set; }
+    public enum CompressionType { None, Gzip, Zstandard }
+    public CompressionType Compression { get; private set; }
+    public double LoadingTime { get; private set; }
+
+    // HEADER
+    // The first section of a Blender file
+
+    public IBinaryReader Buffer { get; }
+    public int PointerSize { get; }
+    public Endian Endian { get; }
+    public string Version { get; }
+
+    // BLOCKS
+    // The rest of the file is a list of blocks with the same format
+
+    public BlockTable Blocks { get; }
+
+    // DNA1
+    // The last block defines the data types contained in the other blocks.
+
+    public int NameCount { get; }
+    public int TypeCount { get; }
+    public int StructCount { get; }
+    internal Name[] Names { get; }
+    public Type[] Types { get; }
+    public ushort[] Lengths { get; }
+    public Struct[] Structs { get; }
+
+
+
     public static File From (string path)
     {
+        var timer = Stopwatch.StartNew ();
         var file = Sys.File.Open (path, Sys.FileMode.Open, Sys.FileAccess.Read, Sys.FileShare.Read);
+
         var mem = new Sys.MemoryStream ();
         var bin = new byte[4];
+        CompressionType comp;
 
         file.Read (bin, 0, 4);
         file.Seek (0, Sys.SeekOrigin.Begin);
@@ -49,6 +90,7 @@ public partial class File
             bin[0] == 0x1F &&
             bin[1] == 0x8B
         ) {
+            comp = CompressionType.Gzip;
             var gz = new Sys.Compression.GZipStream (file, Sys.Compression.CompressionMode.Decompress);
             gz.CopyTo (mem);
             gz.Close ();
@@ -58,20 +100,26 @@ public partial class File
             bin[1] == 0xB5 &&
             bin[2] == 0x2F &&
             bin[3] == 0xFD
-        )
-        {
+        ) {
+            comp = CompressionType.Zstandard;
             var decompresor = new ZstdNet.DecompressionStream (file);
             decompresor.CopyTo (mem);
             decompresor.Close ();
         }
-        else
-        {
+        else {
+            comp = CompressionType.None;
             file.CopyTo (mem);
         }
 
         var blend = new File (mem.ToArray ());
         mem.Close ();
         file.Close ();
+
+        timer.Stop ();
+        blend.LoadingTime = timer.ElapsedMilliseconds / 1000d;
+        blend.Filepath = path;
+        blend.Compression = comp;
+
         return blend;
     }
 
@@ -230,27 +278,6 @@ public partial class File
         Structs = sbuilder.ToArray ();
     }
 
-    // HEADER
-
-    public IBinaryReader Buffer { get; }
-    public int PointerSize { get; }
-    public Endian Endian { get; }
-    public string Version { get; }
-
-    // BLOCKS
-
-    public BlockTable Blocks { get; }
-
-    // DNA1
-
-    public int NameCount { get; }
-    public int TypeCount { get; }
-    public int StructCount { get; }
-    internal Name[] Names { get; }
-    public Type[] Types { get; }
-    public ushort[] Lengths { get; }
-    public Struct[] Structs { get; }
-
 
     public IEnumerable <Block> GetByCode (BlockCode code)
     {
@@ -270,6 +297,7 @@ public partial class File
     }
 
 }
+
 
 public class BlockTable : Table <adr_t, Block>
 {
@@ -303,15 +331,15 @@ public class BlockTable : Table <adr_t, Block>
         {
             if (b.OldAddress.IsValid)
             {
-                    _adrs[_adrs_count++] = new AddressItem (b.OldAddress, b.BlockIndex);
+                _adrs[_adrs_count++] = new AddressItem (b.OldAddress, b.BlockIndex);
             }
 
             if (b.Code.IsCode2 ())
             {
-                    if (_codes.ContainsKey (b.Code))
-                        _codes[b.Code].Add (b);
-                    else
-                        _codes.Add (b.Code, new List<Block> { b });
+                if (_codes.ContainsKey (b.Code))
+                    _codes[b.Code].Add (b);
+                else
+                    _codes.Add (b.Code, new List<Block> { b });
             }
         }
 
@@ -336,7 +364,6 @@ public class BlockTable : Table <adr_t, Block>
         return i < 0 ? -1 : _adrs[i].Index;
     }
 }
-
 
 public class Part : BinaryBuffer
 {
@@ -429,6 +456,7 @@ public partial class Block : Part
 
     public override string ToString () => $"{Code} {Struct}";
 }
+
 
 public class Struct : IStruct
 {

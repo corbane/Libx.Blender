@@ -17,7 +17,11 @@ using len_t = System.Int32;
 //      // public len_t pos (string name);
 // }
 
-public class Data
+/*
+
+// This class associte a buffer with a structute type
+// It is usefull to access to the value by fields name.
+public class SdnaReader // BinaryMap
 {
     IBinaryBuffer buf;
 
@@ -102,6 +106,7 @@ public class Data
     public string ZstrZ (string k, Encoding encoding, len_t len, string d) { var p = pos (k); return p < 0 ? d : encoding.GetString (buf.ZgetZ (p, len, new byte[len])); }
 
 }
+*/
 
 public abstract class Table <K, T> : IEnumerable<T> where K : IComparable <K>
 {
@@ -125,6 +130,8 @@ public abstract class Table <K, T> : IEnumerable<T> where K : IComparable <K>
     public int Count => _count;
 
     public T this[int index] => _items[index];
+
+    public abstract K GetKey (T item);
 
     public virtual int IndexOf (K key)
     {
@@ -159,8 +166,6 @@ public abstract class Table <K, T> : IEnumerable<T> where K : IComparable <K>
 
         return _items[i];
     }
-
-    public abstract K GetKey (T item);
 
     public IEnumerator<T> GetEnumerator ()
     {
